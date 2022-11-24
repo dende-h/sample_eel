@@ -1,0 +1,20 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "cSpell.allowCompoundWords": true,
+  "indentRainbow.colorOnWhiteSpaceOnly": true,
+  "editor.quickSuggestions": {
+    "comments": false, // コメント内では無効
+    "strings": true, // 文字列内では有効
+    "other": true //  その他の場所で有効
+  }, // 補完候補の自動表示
+  "editor.guides.indentation": false,
+  "editor.renderLineHighlight": "none",
+  "editor.tabSize": 2,
+  "editor.cursorBlinking": "expand"
+}
