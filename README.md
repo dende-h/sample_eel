@@ -1,46 +1,133 @@
-# Getting Started with Create React App
+# このリポジトリについて
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Python でデスクトップアプリの GUI を React で開発するためのライブラリ eel を使えるようにするためのテンプレート
 
-## Available Scripts
+## 利用させていただいた元リポジトリ
 
-In the project directory, you can run:
+[https://github.com/python-eel/Eel](https://github.com/python-eel/Eel)
 
-### `npm start`
+こちらの examples ディレクトリの 07-CreateReactApp のコードを元にしています
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+App.tsx などがクラスコンポーネントだったので関数コンポーネントに変更
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+また自分用に ChakraUI や Recoil が使えるようになっています（この文章を執筆時点でこの環境でそれらが正常に動作するかは確認できておりません。ChakraUI のコンポーネントは使えてるから多分大丈夫なはず）
 
-### `npm test`
+vsCode でコード整形できるように eslint と prettier も設定しています
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 環境
 
-### `npm run build`
+Python3 ver9.13
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+git version 2.37.1.windows.1
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm 8.19.2
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+node.js v16.18.0
 
-### `npm run eject`
+react 17.0.2
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**※anaconda などで Python を入れている場合動作確認しておりません。使えない可能性があります。**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## How to use
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Python で仮想環境でプロジェクトを作る
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- projectEnvs などのディレクトリを任意の場所に作ってそこをカレントディレクトリにし、python コマンドで仮想環境を作る
 
-## Learn More
+```
+cd C:\Users\［******］\Py_workSpace\projectEnvs
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+python -m venv [プロジェクト名]
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 出来上がったプロジェクトフォルダに移動、仮想環境に入ってライブラリをインストール
+
+```
+cd ./[プロジェクトディレクトリ]
+
+.\Scripts\Activate.ps1　　//このコマンドで仮想環境に入れる(Powershellの場合)
+
+.\Scripts\activate.bat    //コマンドプロンプトの場合はbatファイルの方を指定
+
+(sample_eel) PS C:\Users\［*******］\Py_workSpace\projectEnvs\sample_eel>
+//表示がこのようになっていれば仮想環境に入れています
+
+pip install bottle bottle-websocket future whichcraft eel pyinstaller
+```
+
+### このリポジトリをプロジェクト内に Clone して利用する
+
+- プロジェクト内に新しく web ディレクトリを作成してその中に Clone
+  ディレクトリは空じゃないとエラーが出ます。
+
+```
+cd C:\Users\［*******］\Py_workSpace\projectEnvs\sample_eel>web
+
+git clone [リポジトリURL] .
+//既存の空のディレクトリにCloneするため最後は「.」
+```
+
+- 追跡リポジトリをプロジェクトで使用するものに変更
+  変更できてるかの確認は`git remote -v`
+
+```
+git remote set-url origin [新しいプロジェクトのリポジトリURL]
+
+git pull origin
+```
+
+- カレントディレクトリにて npm インストールとビルド
+  ChakraUI や recoil やらのライブラリを元から使っているので、packagejson を確認して使用しないものは削除してください
+
+```
+nmp install　//ライブラリのインストール
+
+npm run build　//index.htmlのビルド
+
+git add .
+
+git commit -m "コミットメッセージ"
+
+git push origin main
+```
+
+### 動作を確認
+
+- 通常起動
+
+```
+Python .\eel_sample_python.py
+```
+
+React の index.html の画面が立ち上がれば OK
+
+この場合はビルド後の index.html を読み込んでいます
+
+- Develop 起動
+  Powershell を二つ起動しそれぞれで別のコマンドを打つ
+
+```
+Python .\eel_sample_python.py true   //trueの引数をつけてPythonファイルを起動
+```
+
+```
+npm start
+```
+
+localhost3000 で先ほどと同じように起動すれば成功
+
+こちらは Public 下の index.html を読み込んでいるので編集すると画面に反映されます
+
+### 実行ファイル作成
+
+```
+python -m eel eel_sample_python.py build --onefile --name react-eel-app
+```
+
+react-eel-app はファイル名なので自由に変更してください
+
+dist ディレクトリが新しく生成されてその直下に exe ファイルができています
+
+ダブルクリックするとアプリが起動します
+
+web ディレクトリごとデスクトップにコピーして起動しても動作したので、このファイルを渡せば Python 環境がない PC でも利用できます
